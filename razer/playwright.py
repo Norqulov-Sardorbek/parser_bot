@@ -6,7 +6,7 @@ from playwright.sync_api import sync_playwright
 from razer.utils.telegram_utils import send_telegram_message
 from .models import TaskAccounts
 
-BROWSER_HEADLESS = False
+BROWSER_HEADLESS = True
 
 
 
@@ -380,6 +380,4 @@ def block_resources(page):
         route.continue_()
 
     page.route("**/*", handler)
-
-
 
