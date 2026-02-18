@@ -4,10 +4,9 @@ services:
     command: >
       sh -c "
       python manage.py migrate &&
-      gunicorn config.wsgi:application --bind 0.0.0.0:8070
+      python manage.py collectstatic --noinput &&
+      python -m gunicorn config.wsgi:application --bind 0.0.0.0:8070 --workers 3 --timeout 120
       "
-    volumes:
-      - .:/app
     env_file:
       - .env
     ports:
