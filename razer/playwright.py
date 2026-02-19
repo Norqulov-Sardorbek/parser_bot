@@ -34,9 +34,9 @@ def run_task(
                 send_telegram_message(f"⚠️ Skipping {email} due to insufficient balance")
                 continue
             elif  data_login['success']:
-                acc.gold_balance = data_login['gold']
-                acc.silver_balance = data_login['silver']
-                if data_login['gold']<=30:
+                acc.gold_balance = float(data_login['gold'])
+                acc.silver_balance = float(data_login['silver'])
+                if float(data_login['gold'])<=30:
                     send_telegram_message(f"Account {email} has low balance after purchase of 30 Gold top up")
                 acc.save()
                 break
@@ -167,7 +167,7 @@ def login_razer(email, password, auth_key, value, product_url, player_id=None):
         print(f"PIN code generated and saved: {pin_code}")
         
 
-        return {"success": True, "pin": pin_code,"gold":gold_balance,"silver":silver_balance}
+        return {"success": True, "pin": pin_code,"gold":float(gold_balance),"silver":float(silver_balance)}
 
 
 def enter_player_number(page, player_id: str):

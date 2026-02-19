@@ -20,7 +20,8 @@ class JawalkerTopupView(APIView):
                 player_id=data.get('player_id'),
                 product=data.get('product')
             )
-            return Response({"message": ok}, status=status.HTTP_200_OK)
+            print(ok)
+            return Response(ok, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
