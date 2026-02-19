@@ -23,6 +23,7 @@ def run_task(
     try:
         print(f"Task started:, {value} Token")
         accounts = TaskAccounts.objects.all().order_by("-gold_balance")
+        data_login = None
         for acc in accounts:
             email = acc.email
             password = acc.password
@@ -170,14 +171,12 @@ def login_razer(email, password, auth_key, value, product_url, player_id=None):
 
 
 def enter_player_number(page, player_id: str):
+    player_input = page.locator(
+        '#accountNumber6, input[name="accountNumber"]'
+    ).first
 
-    section = page.locator("text=User information").locator("..")
-
-    player_input = section.get_by_role("textbox", name="Enter Player Number")
-
+    player_input.wait_for(state="visible")
     player_input.fill(player_id)
-    
-    page.wait_for_timeout(1000)
 
 
 
