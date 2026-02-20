@@ -48,7 +48,8 @@ def run_task(
             return {"success": False, "message": f"❌ **Task failed:** {data_login['message']}"}
         print(f"✅ Task completed successfully")
         send_telegram_message(f"✅ **Task completed successfully:**  - {value} Token")
-        return {"success": True, "message": f"✅ Task completed successfully"}
+        print(data_login.get("transaction_id", "N/A"))
+        return {"success": True, "transaction_id": data_login.get("transaction_id", "N/A"), "message": f"✅ Task completed successfully"}
     except Exception as e:
         send_telegram_message(f"❌ **Task failed:** {e}")
         return {"success": False, "message": f"❌ **Task failed:** {e}"}
@@ -162,12 +163,14 @@ def login_razer(email, password, auth_key, value, product_url, player_id=None):
         gold_balance = page.locator('[data-cs-override-id="nav-gold-balance"] span.text--zgold').text_content()
         silver_balance = page.locator(
             '[data-cs-override-id="nav-silver-balance"] span.text--zsilver').text_content()
+        page.wait_for_selector("div.row.my-2 div.col-sm-8 span")
 
+        transaction_id = page.locator(
+    "div.row.my-2 div.col-sm-8 span"
+).nth(5).text_content().strip()
         save_pin(email, value, pin_code)
         print(f"PIN code generated and saved: {pin_code}")
-        
-
-        return {"success": True, "pin": pin_code,"gold":float(gold_balance),"silver":float(silver_balance)}
+        return {"success": True, "pin": pin_code,"gold":float(gold_balance),"silver":float(silver_balance),"transaction_id": transaction_id}
 
 
 def enter_player_number(page, player_id: str):
